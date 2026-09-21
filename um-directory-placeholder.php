@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Directory Search Placeholder
  * Description:     Extension to Ultimate Member for replacing the Members Directory Search Placeholder with Custom Placeholder.
- * Version:         1.0.0
+ * Version:         1.1.0
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v2 or later
@@ -31,10 +31,16 @@ Class UM_Directory_Placeholder {
         $custom_placeholder = sanitize_text_field( get_post_meta( $form_id, '_um_custom_placeholder', true ) );
 
         if ( ! empty( $custom_placeholder )) {
-            $html = ob_get_contents();
+
+            $local_search = 'Search';
+            if ( substr( get_locale(), 0, 3 ) != 'en_' ) {
+                $local_search = esc_html__( 'Search', 'ultimate-member' );
+            }
+
+            $html = ob_get_contents(); 
             ob_end_clean();
 
-            $html = str_replace( 'placeholder="Search"', 'placeholder="' . esc_attr( $custom_placeholder ) . '"', $html );
+            $html = str_replace( 'placeholder="' . $local_search . '"', 'placeholder="' . esc_attr( $custom_placeholder ) . '"', $html );
 
             ob_start();
             echo $html;
